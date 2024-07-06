@@ -5,8 +5,8 @@ import { ToastUI } from './ui/toast';
 const IS_MAC_OS = getOS().type === 'macosx';
 
 runAtDocumentEnd(() => {
-  window.addEventListener('keydown', copyHandler);
   const toastUI = new ToastUI();
+  window.addEventListener('keydown', copyHandler);
 
   async function copyHandler(event: KeyboardEvent) {
     if (!matchShortcut(event)) return;
@@ -15,8 +15,7 @@ runAtDocumentEnd(() => {
     const link = getLink();
     await copyHTML(link);
 
-    const messageWhenAction = chrome.i18n.getMessage('whenAction');
-    toastUI.createToast({ message: messageWhenAction, duration: 1000 });
+    toastUI.createToast({ message: chrome.i18n.getMessage('whenAction'), duration: 1000 });
   }
 });
 

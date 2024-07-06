@@ -26,9 +26,14 @@ export class ToastUI {
     document.head.appendChild(style);
   }
 
+  // FIXME: It is not queueing
   private queueDismiss(duration: number, id: string) {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+
     this.timer = setTimeout(() => {
-      this.dismissToast(id);
+      this.dismiss(id);
       this.timer = null;
     }, duration);
   }
@@ -36,28 +41,32 @@ export class ToastUI {
   createToast({ message, duration = 2000 }: Toast) {
     if (this.existToastId && typeof this.timer === 'number') {
       this.scale();
-      clearTimeout(this.timer);
       this.queueDismiss(duration, this.existToastId);
       return;
     }
 
     const id = `toast-${Math.random().toString(36).substr(2, 9)}`;
+    const toastEl = this.buildDom(message);
+    toastEl.id = id;
+    this.existToastId = id;
+    this.container.appendChild(toastEl);
+
+    this.open();
+    this.queueDismiss(duration, this.existToastId);
+  }
+
+  buildDom(message: string) {
     const toastElement = document.createElement('div');
     toastElement.className = `copy-url-toast`;
     const toastElementContent = document.createElement('div');
-    toastElement.id = id;
-
     toastElement.appendChild(toastElementContent);
     toastElementContent.appendChild(linkIcon());
     toastElementContent.appendChild(text(message));
     toastElementContent.className = 'copy-url-content';
-    this.existToastId = id;
-    this.container.appendChild(toastElement);
-    this.openToast();
-    this.queueDismiss(duration, this.existToastId);
+    return toastElement;
   }
 
-  private openToast() {
+  private open() {
     showing.to(1);
   }
 
@@ -67,10 +76,9 @@ export class ToastUI {
     });
   }
 
-  dismissToast(id: string) {
+  dismiss(id: string) {
     const toastElement = document.getElementById(id);
     if (toastElement) {
-      // Add animation for hiding the toast before removing
       showing.to(0, () => {
         toastElement.remove();
         this.existToastId = null;
@@ -87,12 +95,12 @@ const toastCSS = css`
     transform: translateX(-50%);
     z-index: 9999;
     font-family: system-ui, sans-serif;
-    gap: 8px;
   }
 
   .copy-url-content {
     align-items: center;
     display: inline-flex;
+    gap: 8px;
     padding-left: 12px;
     padding-right: 12px;
     padding-top: 8px;
@@ -104,7 +112,6 @@ const toastCSS = css`
     line-height: 1;
     user-select: none;
     will-change: transform;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     scale: var(--copy-url-scale, 1);
     transform: translateY(var(--copy-url-y, 100px));
     opacity: var(--copy-url-opacity, 1);
