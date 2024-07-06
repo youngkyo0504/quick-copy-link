@@ -9,6 +9,6 @@
   },
   "whenAction": {
     "description": "URL을 복사할 때 표시되는 메시지",
-    "message": "URL copied to clipboard"
+    "message": "URL을 복사했어요"
   }
 }
