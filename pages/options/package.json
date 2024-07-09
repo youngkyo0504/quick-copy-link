@@ -19,11 +19,12 @@
   },
   "dependencies": {
     "@chrome-extension-boilerplate/shared": "workspace:*",
-    "@chrome-extension-boilerplate/storage": "workspace:*"
+    "@chrome-extension-boilerplate/storage": "workspace:*",
+    "@radix-ui/themes": "^3.1.1"
   },
   "devDependencies": {
+    "@chrome-extension-boilerplate/hmr": "workspace:*",
     "@chrome-extension-boilerplate/tailwindcss-config": "workspace:*",
-    "@chrome-extension-boilerplate/tsconfig": "workspace:*",
-    "@chrome-extension-boilerplate/hmr": "workspace:*"
+    "@chrome-extension-boilerplate/tsconfig": "workspace:*"
   }
 }
