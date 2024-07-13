@@ -27,10 +27,6 @@ const manifest = Object.assign({
   description: '__MSG_extensionDescription__',
   permissions: ['storage'].concat(sidePanelConfig.permissions),
   options_page: 'options/index.html',
-  background: {
-    service_worker: 'background.iife.js',
-    type: 'module',
-  },
   action: {
     default_popup: 'popup/index.html',
     default_icon: 'icon-34.png',
