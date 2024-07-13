@@ -5,7 +5,7 @@
   },
   "extensionName": {
     "description": "Extension name",
-    "message": "easy copy url"
+    "message": "Quick Copy Link"
   },
   "whenAction": {
     "description": "URL을 복사할 때 표시되는 메시지",
