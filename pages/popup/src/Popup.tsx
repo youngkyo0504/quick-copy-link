@@ -8,7 +8,7 @@ const Popup = () => {
   return (
     <div className="px-5 py-3 App gap-2 h-full">
       <img className="h-16 w-16" src={chrome.runtime.getURL('popup/icon-256.png')} alt="logo" />
-      <h1 className="text-lg font-bold"> Simple Copy URL</h1>
+      <h1 className="text-lg font-bold">Quick Copy Link</h1>
       <OpenOptionButton>{settingMessage}</OpenOptionButton>
     </div>
   );
@@ -20,7 +20,7 @@ const OpenOptionButton = (props: ComponentPropsWithoutRef<'button'>) => {
       className={
         props.className +
         ' ' +
-        'font-bold  py-1 px-4 rounded shadow hover:scale-105 transition-transform ease-in-out duration-300'
+        'font-bold  py-2 px-4 rounded shadow hover:scale-105 transition-transform ease-in-out duration-300 text-base'
       }
       onClick={() => {
         chrome.runtime.openOptionsPage();
