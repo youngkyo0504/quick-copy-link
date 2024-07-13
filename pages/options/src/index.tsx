@@ -1,8 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import '@src/index.css';
 import Options from '@src/Options';
-import '@radix-ui/themes/styles.css';
-import { Theme } from '@radix-ui/themes';
+import { OverlayProvider } from 'overlay-kit';
+import { Toaster } from './components/ui/toaster';
 
 function init() {
   const appContainer = document.querySelector('#app-container');
@@ -13,9 +13,10 @@ function init() {
   const root = createRoot(appContainer);
 
   root.render(
-    <Theme>
+    <OverlayProvider>
       <Options />
-    </Theme>,
+      <Toaster />
+    </OverlayProvider>,
   );
 }
 

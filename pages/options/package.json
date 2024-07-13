@@ -20,7 +20,17 @@
   "dependencies": {
     "@chrome-extension-boilerplate/shared": "workspace:*",
     "@chrome-extension-boilerplate/storage": "workspace:*",
-    "@radix-ui/themes": "^3.1.1"
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "install": "^0.13.0",
+    "lucide-react": "^0.408.0",
+    "overlay-kit": "^1.2.1",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@chrome-extension-boilerplate/hmr": "workspace:*",
