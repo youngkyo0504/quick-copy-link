@@ -31,6 +31,10 @@ const manifest = Object.assign({
     service_worker: 'background.iife.js',
     type: 'module',
   },
+  action: {
+    default_popup: 'popup/index.html',
+    default_icon: 'icon-34.png',
+  },
   icons: {
     128: 'icon-128.png',
   },
