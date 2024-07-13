@@ -111,7 +111,7 @@ const toastCSS = css`
     font-size: 14px;
     line-height: 1;
     user-select: none;
-    will-change: transform;
+    will-change: transform opacity;
     scale: var(--copy-url-scale, 1);
     transform: translateY(var(--copy-url-y, 100px));
     opacity: var(--copy-url-opacity, 1);
