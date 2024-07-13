@@ -9,13 +9,10 @@ import {
   AlertDialogTitle,
 } from '@src/components/ui/alert-dialog';
 import { overlay } from 'overlay-kit';
+import { i18n_ko } from './i18n/ko';
+import { i18n_en } from './i18n/en';
 
-const lang = {
-  confirm_title: 'Are you absolutely sure?',
-  confirm_description: 'This action cannot be undone. This will permanently delete your rule.',
-  confirm_cancel: 'Cancel',
-  confirm_continue: 'Continue',
-};
+const message = chrome.i18n.getUILanguage() === 'ko' ? i18n_ko : i18n_en;
 
 export const simpleAlert = async () => {
   return await new Promise<boolean>(resolve => {
@@ -34,12 +31,12 @@ export const simpleAlert = async () => {
         <AlertDialog open={isOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>{lang.confirm_title}</AlertDialogTitle>
-              <AlertDialogDescription>{lang.confirm_description}</AlertDialogDescription>
+              <AlertDialogTitle>{message.confirm_title}</AlertDialogTitle>
+              <AlertDialogDescription>{message.confirm_description}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={cancel}>{lang.confirm_cancel}</AlertDialogCancel>
-              <AlertDialogAction onClick={agree}>{lang.confirm_continue}</AlertDialogAction>
+              <AlertDialogCancel onClick={cancel}>{message.confirm_cancel}</AlertDialogCancel>
+              <AlertDialogAction onClick={agree}>{message.confirm_continue}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

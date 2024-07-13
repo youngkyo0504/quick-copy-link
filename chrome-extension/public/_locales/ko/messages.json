@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "description": "Extension description",
+    "description": "Quick Copy Link는 단일 키 입력(Cmd + .)으로 웹 페이지의 제목과 URL을 동시에 복사할 수 있게 해주는 브라우저 확장 프로그램입니다. Slack, Notion, Confluence 등 다양한 플랫폼에 쉽게 공유하고 붙여넣을 수 있도록 설계되었습니다. 특정 웹사이트에 대한 맞춤 설정이 가능해 효율적인 정보 관리와 시간 절약에 완벽합니다.",
     "message": "copy url"
   },
   "extensionName": {

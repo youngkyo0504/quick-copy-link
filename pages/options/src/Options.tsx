@@ -8,6 +8,10 @@ import { HelpCircleIcon } from 'lucide-react';
 import { CopyRuleStorage } from '@chrome-extension-boilerplate/storage';
 import { useToast } from './components/ui/use-toast';
 import { Badge } from './components/ui/badge';
+import { i18n_ko } from './i18n/ko';
+import { i18n_en } from './i18n/en';
+
+const message = chrome.i18n.getUILanguage() === 'ko' ? i18n_ko : i18n_en;
 
 const Options = () => {
   const [domains, setDomains] = useState([{ domain: '', selector: '' }]);
@@ -32,7 +36,7 @@ const Options = () => {
   const handleSave = async () => {
     await CopyRuleStorage.set({ rules: domains });
     toast({
-      description: 'Your rules has been saved.',
+      description: message.whenRuleSaved,
     });
   };
 
@@ -47,38 +51,37 @@ const Options = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-6">Settings</h1>
+        <h1 className="text-2xl font-bold mb-6">{message.settings}</h1>
         <form className="space-y-6">
           <div className="space-y-3">
             <label htmlFor="domains" className="block font-medium text-gray-700 text-lg">
-              Rules
+              {message.rules}
             </label>
             <Alert>
               <HelpCircleIcon color="green" className="h-4 w-4" />
-              <AlertTitle>How to Use Domains and Selectors</AlertTitle>
+              <AlertTitle> {message.howToUse}</AlertTitle>
               <AlertDescription>
                 <div className="">
                   {/* Modified flex direction */}
-                  <p>This extension operates on specific domains and uses CSS selectors to select page elements.</p>
+                  <p>{message.extensionOperates}</p>
                   <Badge className="mt-5" variant="secondary">
-                    Domain Configuration
+                    {message.domainConfiguration}
                   </Badge>
                   <div className="mt-2 text-xs">
                     <p>
-                      The following domain pattern is used: <code>{` https://google.com/*`}</code>{' '}
+                      {message.domainPatternUsed} <code>{` https://google.com/*`}</code>,
+                      <code>{` https://gitlab.com/*/merge_requests/*`}</code>
                     </p>
-                    <p>This pattern means that the extension will work on all pages within this domain.</p>
+                    <p>{message.patternMeaning} </p>
                   </div>
                   <Badge className="mt-4" variant="secondary">
-                    Using Selectors
+                    {message.usingSelectors}
                   </Badge>
                   <div className="mt-2 text-xs">
                     <p>
-                      To select the title of a link, you can use a selector like this: <code>{`.title`}</code>{' '}
+                      {message.selectTitleExample} <code>{`.title`}</code>{' '}
                     </p>
-                    <p>
-                      This selector chooses elements with <code>{`class="title"`}</code>.
-                    </p>
+                    <p>{message.selectorChooses}</p>
                   </div>
                 </div>
               </AlertDescription>
@@ -91,7 +94,7 @@ const Options = () => {
                   id={`domain-${index}`}
                   name={`domain-${index}`}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                  placeholder="Enter a domain"
+                  placeholder={message.enterDomain}
                   value={domain.domain}
                   onChange={e => handleDomainChange(index, 'domain', e.target.value)}
                 />
@@ -100,7 +103,7 @@ const Options = () => {
                   id={`name-${index}`}
                   name={`name-${index}`}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                  placeholder="Enter selectors to match"
+                  placeholder={message.enterSelectors}
                   value={domain.selector}
                   onChange={e => handleDomainChange(index, 'selector', e.target.value)}
                 />
@@ -111,17 +114,17 @@ const Options = () => {
                     const confirmed = await simpleAlert();
                     confirmed && handleRemoveDomain(index);
                   }}>
-                  Remove
+                  {message.remove}
                 </Button>
               </div>
             ))}
             <Button onClick={handleAddDomain} variant="secondary" type="button">
-              Add Rule
+              {message.addRule}
             </Button>
           </div>
           <div className="flex items-center justify-between">
             <Button onClick={handleSave} type="button">
-              Save Changes
+              {message.saveChanges}
             </Button>
           </div>
         </form>
