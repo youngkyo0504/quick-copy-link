@@ -2,15 +2,6 @@ import fs from 'node:fs';
 
 const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
 
-const isFirefox = process.env.__FIREFOX__ === 'true';
-
-const sidePanelConfig = {
-  side_panel: {
-    default_path: 'side-panel/index.html',
-  },
-  permissions: !isFirefox ? ['sidePanel'] : [],
-};
-
 /**
  * After changing, please reload the extension at `chrome://extensions`
  * @type {chrome.runtime.ManifestV3}
@@ -25,7 +16,7 @@ const manifest = Object.assign({
   name: '__MSG_extensionName__',
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
-  permissions: ['storage'].concat(sidePanelConfig.permissions),
+  permissions: ['storage'],
   options_page: 'options/index.html',
   action: {
     default_popup: 'popup/index.html',

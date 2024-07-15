@@ -1,7 +1,7 @@
 {
   "extensionDescription": {
-    "description": "Quick Copy Link is a browser extension that allows you to copy both the title and URL of any web page with a single keypress (Cmd + .). It's designed for easy sharing and pasting into various platforms like Slack, Notion, and Confluence. With customizable settings for specific websites, it's perfect for efficient information management and time-saving.",
-    "message": "copy url"
+    "description": "Extension Description",
+    "message": "Copy page title and link together with one shortcut. Save time on your daily browsing and sharing tasks."
   },
   "extensionName": {
     "description": "Extension name",
