@@ -111,10 +111,14 @@ const toastCSS = css`
     font-size: 14px;
     line-height: 1;
     user-select: none;
-    will-change: transform opacity;
+    will-change: transform, opacity;
     scale: var(--copy-url-scale, 1);
     transform: translateY(var(--copy-url-y, 100px));
     opacity: var(--copy-url-opacity, 1);
+  }
+
+  .copy-url-content span {
+    color: hsl(0 0% 93.333%);
   }
 
   .copy-url-toast[data-side='top'] {
