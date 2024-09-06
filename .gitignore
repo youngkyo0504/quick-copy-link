@@ -19,3 +19,5 @@
 
 # compiled
 chrome-extension/public/manifest.json
+
+dist-zip
