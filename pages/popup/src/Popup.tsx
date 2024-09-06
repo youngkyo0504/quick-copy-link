@@ -20,7 +20,7 @@ const OpenOptionButton = (props: ComponentPropsWithoutRef<'button'>) => {
       className={
         props.className +
         ' ' +
-        'font-bold  py-2 px-4 rounded shadow hover:scale-105 transition-transform ease-in-out duration-300 text-base'
+        ' py-2 font-bold px-4 rounded shadow hover:scale-105 transition-transform ease-in-out duration-300 text-small'
       }
       onClick={() => {
         chrome.runtime.openOptionsPage();

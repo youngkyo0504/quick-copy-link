@@ -52,7 +52,7 @@ const Options = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6">{message.settings}</h1>
-        <form className="space-y-6">
+        <form className="space-y-2.5">
           <div className="space-y-3">
             <label htmlFor="domains" className="block font-medium text-gray-700 text-lg">
               {message.rules}
