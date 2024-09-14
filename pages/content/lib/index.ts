@@ -41,11 +41,23 @@ async function getLink() {
 }
 
 async function copyHTML(element: HTMLElement) {
+  const markdownLink = createMarkdownLink(element);
+
   const clipboardItem = new ClipboardItem({
-    'text/plain': new Blob([element.innerHTML], { type: 'text/plain' }),
+    'text/plain': new Blob([markdownLink], { type: 'text/plain' }),
     'text/html': new Blob([element.outerHTML], { type: 'text/html' }),
   });
   return navigator.clipboard.write([clipboardItem]);
+}
+
+function createMarkdownLink(element: HTMLElement): string {
+  if (element.tagName.toLowerCase() === 'a') {
+    const href = (element as HTMLAnchorElement).href;
+    const text = element.textContent || '';
+    return `[${text}](${href})`;
+  }
+  // 'a' 태그가 아닌 경우 그냥 텍스트 반환
+  return element.textContent || '';
 }
 
 function matchShortcut(event: KeyboardEvent) {
