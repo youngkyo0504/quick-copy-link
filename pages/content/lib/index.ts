@@ -3,40 +3,50 @@ import { runAtDocumentEnd } from './dom/runAtDocumentEnd';
 import { getOS } from './getOS';
 import { ToastUI } from './ui/toast';
 import { glob } from './glob';
+import { DomainRule } from '@chrome-extension-boilerplate/storage/lib/exampleThemeStorage';
 
 const IS_MAC_OS = getOS().type === 'macosx';
+const BUILT_IN_RULES: DomainRule[] = [{ domain: 'https://github.com/*/issues/*', selector: '.gh-header-title' }];
 
-runAtDocumentEnd(() => {
+runAtDocumentEnd(async () => {
   const toastUI = new ToastUI();
-  window.addEventListener('keydown', copyHandler);
+  const rules = (await CopyRuleStorage.get()).rules.concat(BUILT_IN_RULES);
 
-  async function copyHandler(event: KeyboardEvent) {
+  const copyHandler = async (event: KeyboardEvent) => {
     if (!matchShortcut(event)) return;
     event.preventDefault();
     toastUI.createToast({ message: chrome.i18n.getMessage('whenAction'), duration: 1000 });
-
-    const link = await getLink();
+    const link = await getLink(await getSelectorFunc(rules));
     await copyHTML(link);
-  }
+  };
+
+  window.addEventListener('keydown', copyHandler);
 });
 
-async function getTitle() {
-  const rule = (await CopyRuleStorage.get()).rules
+async function getSelectorFunc(rules: DomainRule[]) {
+  const rule = rules
     .filter(rule => rule.domain)
     .filter(rule => glob(rule.domain, window.location.href))
     .at(0);
 
   if (rule) {
-    return document.querySelector(rule.selector)?.textContent || document.title;
+    return () => document.querySelector(rule.selector)?.textContent?.trim() || document.title;
   }
 
-  return document.title;
+  // if no rule matched
+  const h1List = document.querySelectorAll('h1');
+
+  if (h1List.length === 1) {
+    return () => h1List.item(0).textContent?.trim() || document.title;
+  }
+
+  return () => document.title;
 }
 
-async function getLink() {
+async function getLink(selectorFunc: () => string) {
   const link = document.createElement('a');
   link.href = window.location.href;
-  link.textContent = (await getTitle()).trim();
+  link.textContent = selectorFunc().trim();
   return link;
 }
 

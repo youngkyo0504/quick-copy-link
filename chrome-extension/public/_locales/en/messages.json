@@ -9,7 +9,7 @@
   },
   "whenAction": {
     "description": "URL을 복사할 때 표시되는 메시지",
-    "message": "URL copied to clipboard"
+    "message": "Title as Link copied to Clipboard"
   },
   "setting": {
     "description": "설정",

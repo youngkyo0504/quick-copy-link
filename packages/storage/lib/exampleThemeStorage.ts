@@ -1,6 +1,6 @@
 import { createStorage, StorageType } from './base';
 
-type DomainRule = {
+export type DomainRule = {
   domain: string;
   selector: string;
 };
