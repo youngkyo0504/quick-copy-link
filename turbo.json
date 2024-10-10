@@ -10,6 +10,7 @@
       "persistent": true
     },
     "build": {
+      "cache": false,
       "dependsOn": ["^build", "ready"],
       "env": ["__FIREFOX__"],
       "outputs": ["../../dist/**", "dist/**", "build/**"]
