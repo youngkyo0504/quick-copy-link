@@ -77,9 +77,8 @@ export class ToastUI {
     toastElementContent.appendChild(linkIcon());
     toastElementContent.appendChild(text(message));
     toastElementContent.className = 'copy-url-content';
-    // NOTE: Motion-One에서 translateY는 individual transform을 지원해야하기때문에 css variable을 이용한다. 참고할것
-    // @see (https://motion.dev/docs/improvements-to-the-web-animations-api-dx#individual-transforms)
-    toastElementContent.style.setProperty('--motion-translateY', '10px');
+
+    // toastElementContent.style.setProperty('--motion-translateY', '10px');
     return toastElement;
   }
 
@@ -105,6 +104,9 @@ export class ToastUI {
   }
 }
 
+// NOTE: Motion-One에서 translateY는 individual transform을 지원해야하기때문에 css variable을 이용한다. 참고할것
+// @see (https://motion.dev/docs/improvements-to-the-web-animations-api-dx#individual-transforms)
+// buildDom에서 --motion-translateY를 설정해주었기때문에 css에는 translateY를 적지않는다.
 const toastCSS = css`
   .copy-url-toast {
     position: fixed;
@@ -130,9 +132,9 @@ const toastCSS = css`
     line-height: 1;
     user-select: none;
     will-change: transform, opacity;
-    filter: blur(2px);
+    --motion-translateY: 10px;
+    filter: blur(1px);
     scale: 1;
-    // buildDom에서 --motion-translateY를 설정해주었기때문에 css에는 translateY를 적지않는다.
     opacity: 0;
   }
 

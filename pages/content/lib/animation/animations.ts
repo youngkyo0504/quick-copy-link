@@ -1,4 +1,4 @@
-import { animate } from 'motion';
+import { animate, timeline } from 'motion';
 
 const keyframesLikeSpring = [0.32, 0.72, 0, 1] as const;
 
@@ -19,7 +19,7 @@ export const open = (selector: string) => {
     {
       y: {
         easing: keyframesLikeSpring,
-        duration: 0.3,
+        duration: 0.5,
       },
       filter: {
         duration: 0.3,
