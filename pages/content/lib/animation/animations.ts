@@ -6,13 +6,11 @@ export const dismiss = (selector: string) => {
   return animate(selector, { y: 10, opacity: 0, filter: 'blur(2px)' }, { duration: 0.3 });
 };
 
-export const scale = (selector: string) => {
-  return animate(selector, { scale: 1.1 }, { duration: 0.7, easing: keyframesLikeSpring });
-};
-
-export const shrink = (selector: string) => {
-  return animate(selector, { scale: 1 }, { duration: 0.6, easing: 'ease-in-out' });
-};
+export const scaleAndShrink = (selector: string) =>
+  timeline([
+    [selector, { scale: 1.1 }, { duration: 0.7, easing: keyframesLikeSpring }],
+    [selector, { scale: 1 }, { duration: 0.6, easing: 'ease-in-out' }],
+  ]);
 
 export const open = (selector: string) => {
   return animate(

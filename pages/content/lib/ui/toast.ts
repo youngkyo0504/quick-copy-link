@@ -13,7 +13,6 @@ export class ToastUI {
   private existToastId: string | null = null;
   private timer: number | null = null;
   private state: 'open' | 'close' = 'close';
-  private scaleAnimationControl: any;
 
   constructor() {
     this.container = document.createElement('div');
@@ -90,15 +89,7 @@ export class ToastUI {
   }
 
   private async scale() {
-    const control = animation.scale('.copy-url-content');
-    this.scaleAnimationControl = control;
-    control.finished.then(() => {
-      // NOTE: animate() 함수가 실행될때마다 기존 animation이 멈추고 새로운 애니메이션이 실행된다.
-      if (this.scaleAnimationControl.playState === 'running') {
-        return;
-      }
-      animation.shrink('.copy-url-content');
-    });
+    animation.scaleAndShrink('.copy-url-content');
   }
 
   dismiss(id: string) {
@@ -139,9 +130,9 @@ const toastCSS = css`
     line-height: 1;
     user-select: none;
     will-change: transform, opacity;
+    filter: blur(2px);
     scale: 1;
     // buildDom에서 --motion-translateY를 설정해주었기때문에 css에는 translateY를 적지않는다.
-    filter: blur(2px);
     opacity: 0;
   }
 
