@@ -1,7 +1,7 @@
 import { css } from '../dom/css';
 import { linkIcon } from './linkIcon';
 import { text } from '../dom/text';
-import { scale, showing } from '@lib/animation/animations';
+import * as animation from '@lib/animation/animations';
 
 interface Toast {
   message: string;
@@ -12,6 +12,8 @@ export class ToastUI {
   private container: HTMLElement;
   private existToastId: string | null = null;
   private timer: number | null = null;
+  private state: 'open' | 'close' = 'close';
+  private scaleAnimationControl: any;
 
   constructor() {
     this.container = document.createElement('div');
@@ -38,21 +40,34 @@ export class ToastUI {
     }, duration);
   }
 
-  createToast({ message, duration = 2000 }: Toast) {
+  showToast({ message, duration = 2000 }: Toast) {
     if (this.existToastId) {
-      this.scale();
+      if (this.state === 'open') {
+        this.scale();
+      }
+
+      if (this.state === 'close') {
+        this.open();
+      }
+
       this.queueDismiss(duration, this.existToastId);
       return;
     }
 
+    this.createToast({
+      message,
+      duration,
+    });
+  }
+
+  createToast({ message, duration = 2000 }: Toast) {
     const id = `toast-${Math.random().toString(36).substr(2, 9)}`;
     const toastEl = this.buildDom(message);
     toastEl.id = id;
     this.existToastId = id;
     this.container.appendChild(toastEl);
-
-    this.open();
     this.queueDismiss(duration, this.existToastId);
+    this.open();
   }
 
   buildDom(message: string) {
@@ -63,25 +78,37 @@ export class ToastUI {
     toastElementContent.appendChild(linkIcon());
     toastElementContent.appendChild(text(message));
     toastElementContent.className = 'copy-url-content';
+    // NOTE: Motion-One에서 translateY는 individual transform을 지원해야하기때문에 css variable을 이용한다. 참고할것
+    // @see (https://motion.dev/docs/improvements-to-the-web-animations-api-dx#individual-transforms)
+    toastElementContent.style.setProperty('--motion-translateY', '10px');
     return toastElement;
   }
 
   private open() {
-    showing.to(1);
+    this.state = 'open';
+    animation.open('.copy-url-content');
   }
 
-  private scale() {
-    scale.to(1.1, () => {
-      scale.to(1);
+  private async scale() {
+    const control = animation.scale('.copy-url-content');
+    this.scaleAnimationControl = control;
+    control.finished.then(() => {
+      // NOTE: animate() 함수가 실행될때마다 기존 animation이 멈추고 새로운 애니메이션이 실행된다.
+      if (this.scaleAnimationControl.playState === 'running') {
+        return;
+      }
+      animation.shrink('.copy-url-content');
     });
   }
 
   dismiss(id: string) {
     const toastElement = document.getElementById(id);
     if (toastElement) {
-      showing.to(0, () => {
-        toastElement.remove();
+      this.state = 'close';
+      animation.dismiss('.copy-url-content').finished.then(() => {
+        if (this.state === 'open') return;
         this.existToastId = null;
+        toastElement.remove();
       });
     }
   }
@@ -112,60 +139,13 @@ const toastCSS = css`
     line-height: 1;
     user-select: none;
     will-change: transform, opacity;
-    scale: var(--copy-url-scale, 1);
-    transform: translateY(var(--copy-url-y, 100px));
-    opacity: var(--copy-url-opacity, 1);
+    scale: 1;
+    // buildDom에서 --motion-translateY를 설정해주었기때문에 css에는 translateY를 적지않는다.
+    filter: blur(2px);
+    opacity: 0;
   }
 
   .copy-url-content span {
     color: hsl(0 0% 93.333%);
-  }
-
-  .copy-url-toast[data-side='top'] {
-    animation: slideUpAndFade 0.3s ease-out forwards;
-  }
-
-  .copy-url-toast[data-side='down'] {
-    animation: slideDownAndFade 0.3s ease-out forwards;
-  }
-
-  .copy-url-content[data-scale='true'] {
-    transform-origin: center;
-    animation: scale 0.3s ease-out forwards;
-  }
-
-  @keyframes slideDownAndFade {
-    from {
-      opacity: 1;
-      transform: translate(-50%, 0%);
-    }
-    to {
-      opacity: 0;
-      transform: translate(-50%, 10%);
-    }
-  }
-
-  @keyframes slideUpAndFade {
-    from {
-      opacity: 0;
-      transform: translate(-50%, 10%);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, 0%);
-    }
-  }
-
-  @keyframes scale {
-    from {
-      opacity: 0;
-      scale: 1;
-      transform: translate(-50%, 0);
-    }
-    to {
-      opacity: 1;
-      scale: 1.5;
-      transform: translate(-50%, 0);
-    }
   }
 `;
