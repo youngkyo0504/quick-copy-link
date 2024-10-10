@@ -15,7 +15,7 @@ runAtDocumentEnd(async () => {
   const copyHandler = async (event: KeyboardEvent) => {
     if (!matchShortcut(event)) return;
     event.preventDefault();
-    toastUI.createToast({ message: chrome.i18n.getMessage('whenAction'), duration: 1000 });
+    toastUI.showToast({ message: chrome.i18n.getMessage('whenAction'), duration: 1000 });
     const link = await getLink(await getSelectorFunc(rules));
     await copyHTML(link);
   };
