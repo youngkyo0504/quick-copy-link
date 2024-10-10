@@ -39,7 +39,7 @@ export class ToastUI {
   }
 
   createToast({ message, duration = 2000 }: Toast) {
-    if (this.existToastId && typeof this.timer === 'number') {
+    if (this.existToastId) {
       this.scale();
       this.queueDismiss(duration, this.existToastId);
       return;
