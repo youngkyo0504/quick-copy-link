@@ -185,6 +185,9 @@ importers:
       '@chrome-extension-boilerplate/storage':
         specifier: workspace:*
         version: link:../../packages/storage
+      motion:
+        specifier: ^10.18.0
+        version: 10.18.0
     devDependencies:
       '@chrome-extension-boilerplate/hmr':
         specifier: workspace:*
@@ -608,6 +611,53 @@ packages:
       mrmime: 1.0.1
       semver: 7.6.3
     dev: true
+
+  /@motionone/animation@10.18.0:
+    resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
+    dependencies:
+      '@motionone/easing': 10.18.0
+      '@motionone/types': 10.17.1
+      '@motionone/utils': 10.18.0
+      tslib: 2.6.3
+    dev: false
+
+  /@motionone/dom@10.18.0:
+    resolution: {integrity: sha512-bKLP7E0eyO4B2UaHBBN55tnppwRnaE3KFfh3Ps9HhnAkar3Cb69kUCJY9as8LrccVYKgHA+JY5dOQqJLOPhF5A==}
+    dependencies:
+      '@motionone/animation': 10.18.0
+      '@motionone/generators': 10.18.0
+      '@motionone/types': 10.17.1
+      '@motionone/utils': 10.18.0
+      hey-listen: 1.0.8
+      tslib: 2.6.3
+    dev: false
+
+  /@motionone/easing@10.18.0:
+    resolution: {integrity: sha512-VcjByo7XpdLS4o9T8t99JtgxkdMcNWD3yHU/n6CLEz3bkmKDRZyYQ/wmSf6daum8ZXqfUAgFeCZSpJZIMxaCzg==}
+    dependencies:
+      '@motionone/utils': 10.18.0
+      tslib: 2.6.3
+    dev: false
+
+  /@motionone/generators@10.18.0:
+    resolution: {integrity: sha512-+qfkC2DtkDj4tHPu+AFKVfR/C30O1vYdvsGYaR13W/1cczPrrcjdvYCj0VLFuRMN+lP1xvpNZHCRNM4fBzn1jg==}
+    dependencies:
+      '@motionone/types': 10.17.1
+      '@motionone/utils': 10.18.0
+      tslib: 2.6.3
+    dev: false
+
+  /@motionone/types@10.17.1:
+    resolution: {integrity: sha512-KaC4kgiODDz8hswCrS0btrVrzyU2CSQKO7Ps90ibBVSQmjkrt2teqta6/sOG59v7+dPnKMAg13jyqtMKV2yJ7A==}
+    dev: false
+
+  /@motionone/utils@10.18.0:
+    resolution: {integrity: sha512-3XVF7sgyTSI2KWvTf6uLlBJ5iAgRgmvp3bpuOiQJvInd4nZ19ET8lX5unn30SlmRH7hXbBbH+Gxd0m0klJ3Xtw==}
+    dependencies:
+      '@motionone/types': 10.17.1
+      hey-listen: 1.0.8
+      tslib: 2.6.3
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2946,6 +2996,10 @@ packages:
     dependencies:
       function-bind: 1.1.2
 
+  /hey-listen@1.0.8:
+    resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
+    dev: false
+
   /human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
@@ -3466,6 +3520,15 @@ packages:
   /minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  /motion@10.18.0:
+    resolution: {integrity: sha512-MVAZZmwM/cp77BrNe1TxTMldxRPjwBNHheU5aPToqT4rJdZxLiADk58H+a0al5jKLxkB0OdgNq6DiVn11cjvIQ==}
+    dependencies:
+      '@motionone/animation': 10.18.0
+      '@motionone/dom': 10.18.0
+      '@motionone/types': 10.17.1
+      '@motionone/utils': 10.18.0
+    dev: false
 
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
