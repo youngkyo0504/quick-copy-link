@@ -1,6 +1,7 @@
 <div align="center">
 <img src="chrome-extension/public/icon-128.png" alt="logo"/>
 <h1> Quick Copy Link </h1>
+  <img src="https://img.shields.io/chrome-web-store/users/ghofdmbmhcgkhjmgoeclmffmdgaocaaj" />
 </div>
 
 ### Key Features:
