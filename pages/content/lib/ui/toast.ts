@@ -133,7 +133,7 @@ const toastCSS = css`
     user-select: none;
     will-change: transform, opacity;
     --motion-translateY: 10px;
-    filter: blur(1px);
+    filter: blur(3px);
     scale: 1;
     opacity: 0;
   }
