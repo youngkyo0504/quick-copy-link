@@ -3,7 +3,7 @@ import { animate, timeline } from 'motion';
 const keyframesLikeSpring = [0.32, 0.72, 0, 1] as const;
 
 export const dismiss = (selector: string) => {
-  return animate(selector, { y: 10, opacity: 0, filter: 'blur(3px)' }, { duration: 0.3 });
+  return animate(selector, { y: 10, opacity: 0, filter: 'blur(3px)', scale: 0.95 }, { duration: 0.3 });
 };
 
 export const scaleAndShrink = (selector: string) =>
@@ -15,8 +15,12 @@ export const scaleAndShrink = (selector: string) =>
 export const open = () => {
   return animate(
     '.copy-url-content',
-    { y: '0px', opacity: 1, filter: 'blur(0px)' },
+    { y: '0px', opacity: 1, filter: 'blur(0px)', scale: 1 },
     {
+      scale: {
+        easing: keyframesLikeSpring,
+        duration: 0.3,
+      },
       y: {
         easing: keyframesLikeSpring,
         duration: 0.5,
