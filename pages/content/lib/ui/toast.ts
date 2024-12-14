@@ -84,7 +84,7 @@ export class ToastUI {
 
   private open() {
     this.state = 'open';
-    animation.open('.copy-url-content');
+    animation.open();
   }
 
   private async scale() {

@@ -14,5 +14,10 @@
   "setting": {
     "description": "설정",
     "message": "Setting"
+  },
+
+  "shortcutDescription": {
+    "description": "shortcut Description",
+    "message": "copy the url by pressing cmd(ctrl) + ."
   }
 }

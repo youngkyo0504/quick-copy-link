@@ -14,5 +14,10 @@
   "setting": {
     "description": "설정",
     "message": "설정"
+  },
+
+  "shortcutDescription": {
+    "description": "shortcut Description",
+    "message": "cmd(ctrl) + . 눌러서 현재 링크를 복사하세요."
   }
 }
