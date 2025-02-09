@@ -1,21 +1,50 @@
 import { CopyRuleStorage } from '@chrome-extension-boilerplate/storage';
 import { runAtDocumentEnd } from './dom/runAtDocumentEnd';
 import { getOS } from './getOS';
-import { ToastUI } from './ui/toast';
 import { glob } from './glob';
 import { DomainRule } from '@chrome-extension-boilerplate/storage/lib/exampleThemeStorage';
+import { Controller } from './controller';
+import { NewToastUI } from './ui/toast copy';
 
 const IS_MAC_OS = getOS().type === 'macosx';
 const BUILT_IN_RULES: DomainRule[] = [{ domain: 'https://github.com/*/issues/*', selector: '.gh-header-title' }];
 
 runAtDocumentEnd(async () => {
-  const toastUI = new ToastUI();
+  const controller = new Controller();
+
+  // const toastUI = new ToastUI();
   const rules = (await CopyRuleStorage.get()).rules.concat(BUILT_IN_RULES);
 
   const copyHandler = async (event: KeyboardEvent) => {
     if (!matchShortcut(event)) return;
     event.preventDefault();
-    toastUI.showToast({ message: chrome.i18n.getMessage('whenAction'), duration: 1000 });
+    const action = 'copy-title';
+
+    if (controller.isSameAction(action)) {
+      const currentItem = controller.items[0];
+      if (currentItem.state === 'open') currentItem.scale();
+      if (currentItem.state === 'close') currentItem.open();
+    } else {
+      // lastAction과 다를경우
+      controller.handleNewToast(
+        new NewToastUI({
+          container: controller.container,
+          duration: 1000,
+          message: chrome.i18n.getMessage('whenAction'),
+          onDismiss: function () {
+            // arrow function이면 this가 없다. 아래 코드는 암시적인 개념들이 많아서 좋지않다. 명확하게 변경하기
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            controller.items = controller.items.filter(item => item !== this);
+            if (controller.items.length === 0) {
+              controller.lastAction = 'none';
+            }
+          },
+        }),
+        action,
+      );
+    }
+
     const link = await getLink(await getSelectorFunc(rules));
     await copyHTML(link);
   };
