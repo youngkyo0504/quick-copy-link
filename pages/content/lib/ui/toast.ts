@@ -17,6 +17,7 @@ export class ToastUI {
   constructor() {
     this.container = document.createElement('div');
     this.container.className = 'toast-container';
+    this.container.style.setProperty('pointer-events', 'none');
     document.body.appendChild(this.container);
     this.setStyle();
   }
