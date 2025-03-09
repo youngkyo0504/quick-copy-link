@@ -37,7 +37,6 @@ export class Toast {
     this.toastElement = this.buildDom(this.message);
   }
 
-  // FIXME: It is not queueing
   private queueDismiss() {
     if (this.timer) {
       clearTimeout(this.timer);
@@ -84,19 +83,13 @@ export class Toast {
   }
 
   dismiss() {
-    if (this.state === 'pushed') {
-      animation.dismissPushedBack(`#${this.id} .copy-url-content`).finished.then(() => {
-        if (this.state === 'open') return;
-        this.toastElement.remove();
-        this.onDismiss();
-      });
-    } else {
-      animation.dismiss(`#${this.id} .copy-url-content`).finished.then(() => {
-        if (this.state === 'open') return;
-        this.toastElement.remove();
-        this.onDismiss();
-      });
-    }
+    const dismissAnimation = this.state === 'pushed' ? animation.dismissPushedBack : animation.dismiss;
+
+    dismissAnimation(`#${this.id} .copy-url-content`).finished.then(() => {
+      if (this.state === 'open') return;
+      this.toastElement.remove();
+      this.onDismiss();
+    });
 
     this.state = 'close';
   }
