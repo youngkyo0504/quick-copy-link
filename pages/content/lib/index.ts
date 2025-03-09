@@ -24,7 +24,6 @@ runAtDocumentEnd(async () => {
       if (currentItem.state === 'open') currentItem.scale();
       if (currentItem.state === 'close') currentItem.open();
     } else {
-      // lastAction과 다를경우
       const id = `toast-${Math.random().toString(36).substr(2, 9)}`;
 
       controller.handleNewToast(
