@@ -4,7 +4,7 @@ import { getOS } from './getOS';
 import { glob } from './glob';
 import { DomainRule } from '@chrome-extension-boilerplate/storage/lib/exampleThemeStorage';
 import { Controller } from './controller';
-import { NewToastUI } from './ui/toast copy';
+import { Toast } from './ui/toast';
 
 const IS_MAC_OS = getOS().type === 'macosx';
 const BUILT_IN_RULES: DomainRule[] = [{ domain: 'https://github.com/*/issues/*', selector: '.gh-header-title' }];
@@ -27,7 +27,7 @@ runAtDocumentEnd(async () => {
       const id = `toast-${Math.random().toString(36).substr(2, 9)}`;
 
       controller.handleNewToast(
-        new NewToastUI({
+        new Toast({
           id,
           container: controller.container,
           duration: 1000,

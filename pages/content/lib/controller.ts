@@ -1,10 +1,10 @@
 import { css } from './dom/css';
-import { NewToastUI } from './ui/toast copy';
+import { Toast } from './ui/toast';
 
 type Action = 'copy-title' | 'copy-url' | 'none';
 
 export class Controller {
-  public items: NewToastUI[] = [];
+  public items: Toast[] = [];
   public container: HTMLElement;
 
   constructor() {
@@ -23,7 +23,7 @@ export class Controller {
     return this.items[0]?.type === action;
   }
 
-  handleNewToast(toast: NewToastUI) {
+  handleNewToast(toast: Toast) {
     toast.showUp();
     const [existToast, restToast] = this.items;
     existToast?.pushBack();
