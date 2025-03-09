@@ -8,6 +8,7 @@
 
 ### Key Features:
 - Simultaneously copy page title and URL
+- Copy just the URL when needed
 - Paste directly into Slack, Markdown, Notion, Confluence, and more
 - Customize what to copy for specific websites in the settings
 
@@ -19,8 +20,10 @@
 
 ### How to use:
 1. Install the extension
-2. Press Cmd + . on any web page you want to copy
-3. Voila! The page title and URL are copied together
+2. Use these shortcuts:
+   - **Cmd + .** on Mac (or **Ctrl + .** on Windows) to copy title with link
+   - **Cmd + /** on Mac (or **Ctrl + /** on Windows) to copy URL only
+3. The information is copied to your clipboard
 4. Paste anywhere - it appears neatly formatted!
 
 ### Pro tip:
