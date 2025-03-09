@@ -66,7 +66,7 @@ const toastCSS = css`
     line-height: 1;
     user-select: none;
     will-change: transform, opacity;
-    --motion-translateY: 10px;
+    --motion-translateY: 25px;
     --motion-scale: 0.85;
     filter: blur(3px);
     opacity: 0;

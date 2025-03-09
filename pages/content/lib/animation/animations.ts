@@ -9,7 +9,7 @@ export const dismiss = (selector: string) => {
 export const dismissPushedBack = (selector: string) => {
   return animate(
     selector,
-    { y: 'calc( 10px - 60% )', opacity: 0, filter: 'blur(3px)', scale: 0.95 },
+    { y: 'calc( 10px - 50% )', opacity: 0, filter: 'blur(3px)', scale: 0.95 },
     { duration: 0.3 },
   );
 };
@@ -24,7 +24,7 @@ export const pushback = (selector: string) => {
   return timeline([
     [
       selector,
-      { y: '-60%', scale: 0.9 },
+      { y: '-50%', scale: 0.9 },
       {
         duration: 0.7,
         easing: keyframesLikeSpring,
@@ -44,7 +44,7 @@ export const open = (selector: string) => {
       },
       y: {
         easing: keyframesLikeSpring,
-        duration: 0.3,
+        duration: 0.7,
       },
       filter: {
         duration: 0.3,
