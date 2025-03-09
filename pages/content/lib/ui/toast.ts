@@ -10,7 +10,6 @@ export class Toast {
   private container: HTMLElement;
   private onDismiss: () => void;
   private duration: number;
-  private message: string;
   public type: 'copy-title' | 'copy-url';
 
   constructor({
@@ -32,9 +31,8 @@ export class Toast {
     this.type = type;
     this.container = container;
     this.duration = duration;
-    this.message = message;
     this.onDismiss = onDismiss;
-    this.toastElement = this.buildDom(this.message);
+    this.toastElement = this.buildDom(message);
   }
 
   private queueDismiss() {
