@@ -35,7 +35,7 @@ runAtDocumentEnd(async () => {
             matchedAction === 'copy-title'
               ? chrome.i18n.getMessage('whenCopyTitleAsLink')
               : chrome.i18n.getMessage('whenCopyLink'),
-          onDismiss: function () {
+          onDismiss() {
             controller.items = controller.items.filter(item => item.id !== id);
           },
           type: matchedAction,
