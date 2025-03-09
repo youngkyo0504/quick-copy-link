@@ -3,7 +3,7 @@ import { text } from '../dom/text';
 import * as animation from '@lib/animation/animations';
 
 export class NewToastUI {
-  private id = `toast-${Math.random().toString(36).substr(2, 9)}`;
+  public id: string;
   private timer: number | null = null;
   public state: 'open' | 'close' = 'close';
   private toastElement: HTMLDivElement;
@@ -11,18 +11,25 @@ export class NewToastUI {
   private onDismiss: () => void;
   private duration: number;
   private message: string;
+  public type: 'copy-title' | 'copy-url';
 
   constructor({
+    id,
     container,
     duration = 2000,
     message,
     onDismiss,
+    type,
   }: {
+    id: string;
     message: string;
     duration?: number;
     container: HTMLElement;
     onDismiss: () => void;
+    type: 'copy-title' | 'copy-url';
   }) {
+    this.id = id;
+    this.type = type;
     this.container = container;
     this.duration = duration;
     this.message = message;

@@ -11,48 +11,47 @@ const BUILT_IN_RULES: DomainRule[] = [{ domain: 'https://github.com/*/issues/*',
 
 runAtDocumentEnd(async () => {
   const controller = new Controller();
-
-  // const toastUI = new ToastUI();
   const rules = (await CopyRuleStorage.get()).rules.concat(BUILT_IN_RULES);
 
   const copyHandler = async (event: KeyboardEvent) => {
-    if (!matchShortcut(event)) return;
-    event.preventDefault();
-    const action = 'copy-title';
+    const matchedAction = matchShortcut(event);
+    if (!matchedAction) return;
 
-    if (controller.isSameAction(action)) {
+    event.preventDefault();
+
+    if (controller.isSameAction(matchedAction)) {
       const currentItem = controller.items[0];
       if (currentItem.state === 'open') currentItem.scale();
       if (currentItem.state === 'close') currentItem.open();
     } else {
       // lastAction과 다를경우
+      const id = `toast-${Math.random().toString(36).substr(2, 9)}`;
+
       controller.handleNewToast(
         new NewToastUI({
+          id,
           container: controller.container,
           duration: 1000,
-          message: chrome.i18n.getMessage('whenAction'),
+          message:
+            matchedAction === 'copy-title'
+              ? chrome.i18n.getMessage('whenCopyTitleAsLink')
+              : chrome.i18n.getMessage('whenCopyLink'),
           onDismiss: function () {
-            // arrow function이면 this가 없다. 아래 코드는 암시적인 개념들이 많아서 좋지않다. 명확하게 변경하기
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            controller.items = controller.items.filter(item => item !== this);
-            if (controller.items.length === 0) {
-              controller.lastAction = 'none';
-            }
+            controller.items = controller.items.filter(item => item.id !== id);
           },
+          type: matchedAction,
         }),
-        action,
       );
     }
 
-    const link = await getLink(await getSelectorFunc(rules));
+    const link = getLink(getSelectorFunc(rules));
     await copyHTML(link);
   };
 
   window.addEventListener('keydown', copyHandler);
 });
 
-async function getSelectorFunc(rules: DomainRule[]) {
+function getSelectorFunc(rules: DomainRule[]) {
   const rule = rules
     .filter(rule => rule.domain)
     .filter(rule => glob(rule.domain, window.location.href))
@@ -72,7 +71,7 @@ async function getSelectorFunc(rules: DomainRule[]) {
   return () => document.title;
 }
 
-async function getLink(selectorFunc: () => string) {
+function getLink(selectorFunc: () => string) {
   const link = document.createElement('a');
   link.href = window.location.href;
   link.textContent = selectorFunc().trim();
@@ -100,7 +99,15 @@ function createMarkdownLink(element: HTMLElement): string {
 }
 
 function matchShortcut(event: KeyboardEvent) {
-  return event.key === '.' && controlOrMeta(event.metaKey, event.ctrlKey);
+  if (event.key === '.' && controlOrMeta(event.metaKey, event.ctrlKey)) {
+    return 'copy-title';
+  }
+
+  if (event.key === '/' && controlOrMeta(event.metaKey, event.ctrlKey)) {
+    return 'copy-url';
+  }
+
+  null;
 }
 
 export function controlOrMeta(metaKey: boolean, ctrlKey: boolean): boolean {

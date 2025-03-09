@@ -5,7 +5,6 @@ type Action = 'copy-title' | 'copy-url' | 'none';
 
 export class Controller {
   public items: NewToastUI[] = [];
-  public lastAction = 'none';
   public container: HTMLElement;
 
   constructor() {
@@ -16,12 +15,15 @@ export class Controller {
     document.body.appendChild(this.container);
   }
 
-  isSameAction(action: Action) {
-    return this.lastAction === action;
+  isItemsEmpty() {
+    return this.items.length === 0;
   }
 
-  handleNewToast(toast: NewToastUI, action: Action) {
-    this.lastAction = action;
+  isSameAction(action: Action) {
+    return this.items[0]?.type === action;
+  }
+
+  handleNewToast(toast: NewToastUI) {
     toast.showUp();
     const [existToast, restToast] = this.items;
     existToast?.pushBack();
