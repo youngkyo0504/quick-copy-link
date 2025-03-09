@@ -44,8 +44,13 @@ runAtDocumentEnd(async () => {
       );
     }
 
-    const link = getLink(getSelectorFunc(rules));
-    await copyHTML(link);
+    if (matchedAction === 'copy-title') {
+      const link = getLink(getSelectorFunc(rules));
+      await copyHTML(link);
+    } else {
+      const url = window.location.href;
+      await copyString(url);
+    }
   };
 
   window.addEventListener('keydown', copyHandler);
@@ -88,6 +93,13 @@ async function copyHTML(element: HTMLElement) {
   return navigator.clipboard.write([clipboardItem]);
 }
 
+async function copyString(text: string) {
+  const clipboardItem = new ClipboardItem({
+    'text/plain': new Blob([text], { type: 'text/plain' }),
+  });
+  return navigator.clipboard.write([clipboardItem]);
+}
+
 function createMarkdownLink(element: HTMLElement): string {
   if (element.tagName.toLowerCase() === 'a') {
     const href = (element as HTMLAnchorElement).href;
@@ -107,7 +119,7 @@ function matchShortcut(event: KeyboardEvent) {
     return 'copy-url';
   }
 
-  null;
+  return null;
 }
 
 export function controlOrMeta(metaKey: boolean, ctrlKey: boolean): boolean {
