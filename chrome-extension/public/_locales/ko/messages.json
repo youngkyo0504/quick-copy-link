@@ -7,9 +7,13 @@
     "description": "Extension name",
     "message": "Quick Copy Link"
   },
-  "whenAction": {
-    "description": "URL을 복사할 때 표시되는 메시지",
+  "whenCopyTitleAsLink": {
+    "description": "URL을 제목과 함께 복사할 때 표시되는 메시지",
     "message": "Title as Link copied to Clipboard"
+  },
+  "whenCopyLink": {
+    "description": "URL을 복사할 때 표시되는 메시지",
+    "message": "URL copied to Clipboard"
   },
   "setting": {
     "description": "설정",

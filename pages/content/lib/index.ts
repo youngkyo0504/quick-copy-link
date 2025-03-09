@@ -1,29 +1,61 @@
 import { CopyRuleStorage } from '@chrome-extension-boilerplate/storage';
 import { runAtDocumentEnd } from './dom/runAtDocumentEnd';
 import { getOS } from './getOS';
-import { ToastUI } from './ui/toast';
 import { glob } from './glob';
 import { DomainRule } from '@chrome-extension-boilerplate/storage/lib/exampleThemeStorage';
+import { Controller } from './controller';
+import { NewToastUI } from './ui/toast copy';
 
 const IS_MAC_OS = getOS().type === 'macosx';
 const BUILT_IN_RULES: DomainRule[] = [{ domain: 'https://github.com/*/issues/*', selector: '.gh-header-title' }];
 
 runAtDocumentEnd(async () => {
-  const toastUI = new ToastUI();
+  const controller = new Controller();
   const rules = (await CopyRuleStorage.get()).rules.concat(BUILT_IN_RULES);
 
   const copyHandler = async (event: KeyboardEvent) => {
-    if (!matchShortcut(event)) return;
+    const matchedAction = matchShortcut(event);
+    if (!matchedAction) return;
+
     event.preventDefault();
-    toastUI.showToast({ message: chrome.i18n.getMessage('whenAction'), duration: 1000 });
-    const link = await getLink(await getSelectorFunc(rules));
-    await copyHTML(link);
+
+    if (controller.isSameAction(matchedAction)) {
+      const currentItem = controller.items[0];
+      if (currentItem.state === 'open') currentItem.scale();
+      if (currentItem.state === 'close') currentItem.open();
+    } else {
+      const id = `toast-${Math.random().toString(36).substr(2, 9)}`;
+
+      controller.handleNewToast(
+        new NewToastUI({
+          id,
+          container: controller.container,
+          duration: 1000,
+          message:
+            matchedAction === 'copy-title'
+              ? chrome.i18n.getMessage('whenCopyTitleAsLink')
+              : chrome.i18n.getMessage('whenCopyLink'),
+          onDismiss() {
+            controller.items = controller.items.filter(item => item.id !== id);
+          },
+          type: matchedAction,
+        }),
+      );
+    }
+
+    if (matchedAction === 'copy-title') {
+      const link = getLink(getSelectorFunc(rules));
+      await copyHTML(link);
+    } else {
+      const url = window.location.href;
+      await copyString(url);
+    }
   };
 
   window.addEventListener('keydown', copyHandler);
 });
 
-async function getSelectorFunc(rules: DomainRule[]) {
+function getSelectorFunc(rules: DomainRule[]) {
   const rule = rules
     .filter(rule => rule.domain)
     .filter(rule => glob(rule.domain, window.location.href))
@@ -43,7 +75,7 @@ async function getSelectorFunc(rules: DomainRule[]) {
   return () => document.title;
 }
 
-async function getLink(selectorFunc: () => string) {
+function getLink(selectorFunc: () => string) {
   const link = document.createElement('a');
   link.href = window.location.href;
   link.textContent = selectorFunc().trim();
@@ -60,6 +92,13 @@ async function copyHTML(element: HTMLElement) {
   return navigator.clipboard.write([clipboardItem]);
 }
 
+async function copyString(text: string) {
+  const clipboardItem = new ClipboardItem({
+    'text/plain': new Blob([text], { type: 'text/plain' }),
+  });
+  return navigator.clipboard.write([clipboardItem]);
+}
+
 function createMarkdownLink(element: HTMLElement): string {
   if (element.tagName.toLowerCase() === 'a') {
     const href = (element as HTMLAnchorElement).href;
@@ -71,7 +110,15 @@ function createMarkdownLink(element: HTMLElement): string {
 }
 
 function matchShortcut(event: KeyboardEvent) {
-  return event.key === '.' && controlOrMeta(event.metaKey, event.ctrlKey);
+  if (event.key === '.' && controlOrMeta(event.metaKey, event.ctrlKey)) {
+    return 'copy-title';
+  }
+
+  if (event.key === '/' && controlOrMeta(event.metaKey, event.ctrlKey)) {
+    return 'copy-url';
+  }
+
+  return null;
 }
 
 export function controlOrMeta(metaKey: boolean, ctrlKey: boolean): boolean {
