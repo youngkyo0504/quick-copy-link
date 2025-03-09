@@ -10,7 +10,7 @@ export class Controller {
   constructor() {
     this.setStyle();
     this.container = document.createElement('div');
-    this.container.className = 'toast-container';
+    this.container.className = 'copy-url-toast-container';
     this.container.style.setProperty('pointer-events', 'none');
     document.body.appendChild(this.container);
   }
