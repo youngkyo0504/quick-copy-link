@@ -6,15 +6,36 @@ export const dismiss = (selector: string) => {
   return animate(selector, { y: 10, opacity: 0, filter: 'blur(3px)', scale: 0.95 }, { duration: 0.3 });
 };
 
+export const dismissPushedBack = (selector: string) => {
+  return animate(
+    selector,
+    { y: 'calc( 10px - 60% )', opacity: 0, filter: 'blur(3px)', scale: 0.95 },
+    { duration: 0.3 },
+  );
+};
+
 export const scaleAndShrink = (selector: string) =>
   timeline([
     [selector, { scale: 1.1 }, { duration: 0.7, easing: keyframesLikeSpring }],
     [selector, { scale: 1 }, { duration: 0.6, easing: 'ease-in-out' }],
   ]);
 
-export const open = () => {
+export const pushback = (selector: string) => {
+  return timeline([
+    [
+      selector,
+      { y: '-60%', scale: 0.9 },
+      {
+        duration: 0.7,
+        easing: keyframesLikeSpring,
+      },
+    ],
+  ]);
+};
+
+export const open = (selector: string) => {
   return animate(
-    '.copy-url-content',
+    selector,
     { y: '0px', opacity: 1, filter: 'blur(0px)', scale: 1 },
     {
       scale: {
@@ -23,7 +44,7 @@ export const open = () => {
       },
       y: {
         easing: keyframesLikeSpring,
-        duration: 0.5,
+        duration: 0.3,
       },
       filter: {
         duration: 0.3,

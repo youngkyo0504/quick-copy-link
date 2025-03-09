@@ -5,7 +5,7 @@ import * as animation from '@lib/animation/animations';
 export class NewToastUI {
   public id: string;
   private timer: number | null = null;
-  public state: 'open' | 'close' = 'close';
+  public state: 'open' | 'close' | 'pushed' = 'close';
   private toastElement: HTMLDivElement;
   private container: HTMLElement;
   private onDismiss: () => void;
@@ -70,7 +70,7 @@ export class NewToastUI {
 
   open() {
     this.state = 'open';
-    animation.open();
+    animation.open(`#${this.id} .copy-url-content`);
     this.queueDismiss();
   }
 
@@ -80,16 +80,26 @@ export class NewToastUI {
   }
 
   pushBack() {
+    this.state = 'pushed';
+    animation.pushback(`#${this.id} .copy-url-content`);
     return;
   }
 
   dismiss() {
-    this.state = 'close';
+    if (this.state === 'pushed') {
+      animation.dismissPushedBack(`#${this.id} .copy-url-content`).finished.then(() => {
+        if (this.state === 'open') return;
+        this.toastElement.remove();
+        this.onDismiss();
+      });
+    } else {
+      animation.dismiss(`#${this.id} .copy-url-content`).finished.then(() => {
+        if (this.state === 'open') return;
+        this.toastElement.remove();
+        this.onDismiss();
+      });
+    }
 
-    animation.dismiss(`#${this.id} .copy-url-content`).finished.then(() => {
-      if (this.state === 'open') return;
-      this.toastElement.remove();
-      this.onDismiss();
-    });
+    this.state = 'close';
   }
 }

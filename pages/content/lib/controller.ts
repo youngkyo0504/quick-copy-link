@@ -28,8 +28,7 @@ export class Controller {
     const [existToast, restToast] = this.items;
     existToast?.pushBack();
     restToast?.dismiss();
-
-    this.items.push(toast);
+    this.items.unshift(toast);
   }
 
   setStyle() {
